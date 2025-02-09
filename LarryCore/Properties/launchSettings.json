@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\bot\\5.0.0\\CloudTheWolf.DSharpPlus.Scaffolding.Worker.exe",
+      "workingDirectory": "C:\\bot\\5.0.0"
+    }
+  }
+}
