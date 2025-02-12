@@ -33,7 +33,6 @@ namespace LarryCore.Events
         internal static async Task OnMessageCreated(DiscordClient client,
             MessageCreatedEventArgs messageCreatedEventArgs)
         {
-            Logger.Log.LogInformation("We're here");
             if (messageCreatedEventArgs.Author.IsBot) return;
             if (channelIgnoreList.Contains(messageCreatedEventArgs.Channel.Id)) return;
             FloridaManPost(messageCreatedEventArgs);
