@@ -13,7 +13,7 @@ namespace LarryCore
 {
     public class Main : IPlugin
     {
-        public string? Name => "Larry Core";
+        public string Name => "Larry Core";
 
         public string Description => "Core commands / actions for Larry";
 

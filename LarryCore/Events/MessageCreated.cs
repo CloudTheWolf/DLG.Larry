@@ -42,7 +42,7 @@ namespace LarryCore.Events
         {
             if ((int)(DateTime.Now - lastMeme).TotalMinutes < 5) return;
             var messageContent = messageCreatedEventArgs.Message.Content;
-            if (!messageContent.ToLower().Contains("florida man"))
+            if (Regex.IsMatch(messageContent, @"florida\s+(man|woman|person)", RegexOptions.IgnoreCase))
             {
                 return;
             }
@@ -81,7 +81,7 @@ namespace LarryCore.Events
                 else
                 {
                     var msgBody = matchInTitle ? article.Title : article.Description;
-                    messageCreatedEventArgs.Message.RespondAsync(msgBody);
+                    await messageCreatedEventArgs.Message.RespondAsync(msgBody!);
                     lastMeme = DateTime.Now;
                     break;
                 }

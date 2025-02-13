@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,6 @@ namespace LarryCore
         /// <summary>
         /// Ignored channels for "Secret" Responses
         /// </summary>
-        public static List<ulong> IgnoredChannels { get; set; }
+        public static List<ulong>? IgnoredChannels { get; set; }
     }
 }
