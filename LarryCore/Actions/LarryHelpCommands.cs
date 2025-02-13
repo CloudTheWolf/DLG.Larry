@@ -56,7 +56,7 @@ namespace LarryCore.Actions
             ctx.EditResponseAsync(discordMessage);
 
         }
-        
+
         [
             Command("profile-review"),
             Description("Tell someone about profile reviews"),
@@ -71,18 +71,25 @@ namespace LarryCore.Actions
                 Title = "Why your dating profile sucks!",
                 Color = new DiscordColor("#d0f87c"),
                 Description = "And how to fix it!\n\n" +
-                                    "Having reviewed hundreds of thousands of dating app profiles over the last decade both personally and professionally, I’ve identified why profiles aren’t successful...",
+                              "Having reviewed hundreds of thousands of dating app profiles over the last decade both personally and professionally, I’ve identified why profiles aren’t successful...",
                 Url = "https://datelikegoblins.substack.com/p/why-your-dating-profile-sucks"
             };
-            ctx.EditResponseAsync(
-                "Profile approvals are usually done at least once a week, If you're still awaiting approval check your emails." +
-                "\n\nIn the meantime, check out this article to help make get profile ready!",
-                embed
-                    .WithAuthor("Larry", iconUrl: "https://r2.fivemanage.com/IhCibjCMuV7gSbF16zgPO/images/Larry.png")
-                    .WithImageUrl("https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F444ce51c-7fb1-4884-9f5f-5a5ef17359e9_1369x578.png")
-                    .Build());
-
-
+            var websiteButton = new DiscordLinkButtonComponent(
+                "https://datelikegoblins.substack.com/p/why-your-dating-profile-sucks", "Read The Article!", false,
+                new DiscordComponentEmoji(1282759850413002773));
+            var message = new DiscordMessageBuilder
+            {
+                Content =
+                    "Profile approvals are usually done at least once a week, If you're still awaiting approval check your emails." +
+                    "\n\nIn the meantime, check out this article to help get profile ready!"
+            };
+            message.AddEmbed(embed
+                .WithAuthor("Larry", iconUrl: "https://r2.fivemanage.com/IhCibjCMuV7gSbF16zgPO/images/Larry.png")
+                .WithImageUrl(
+                    "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F444ce51c-7fb1-4884-9f5f-5a5ef17359e9_1369x578.png")
+                .Build());
+            message.AddComponents([websiteButton]);
+            ctx.EditResponseAsync(message);
         }
     }
 }
