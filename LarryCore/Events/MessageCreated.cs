@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using DSharpPlus.Entities;
 
 namespace LarryCore.Events
 {
@@ -31,17 +32,17 @@ namespace LarryCore.Events
         ];
 
         internal static async Task OnMessageCreated(DiscordClient client,
-            MessageCreatedEventArgs messageCreatedEventArgs)
+            MessageCreatedEventArgs args)
         {
-            if (messageCreatedEventArgs.Author.IsBot) return;
-            if (channelIgnoreList.Contains(messageCreatedEventArgs.Channel.Id)) return;
-            FloridaManPost(messageCreatedEventArgs);
+            if (args.Author.IsBot) return;
+            if (channelIgnoreList.Contains(args.Channel.Id)) return;
+            FloridaManPost(args);
         }
 
-        private static async void FloridaManPost(MessageCreatedEventArgs messageCreatedEventArgs)
+        private static async void FloridaManPost(MessageCreatedEventArgs args)
         {
             if ((int)(DateTime.Now - lastMeme).TotalMinutes < 5) return;
-            var messageContent = messageCreatedEventArgs.Message.Content;
+            var messageContent = args.Message.Content;
             if (!Regex.IsMatch(messageContent, @"florida\s+(man|woman|person)", RegexOptions.IgnoreCase))
             {
                 return;
@@ -81,13 +82,49 @@ namespace LarryCore.Events
                 else
                 {
                     var msgBody = matchInTitle ? article.Title : article.Description;
-                    await messageCreatedEventArgs.Message.RespondAsync(msgBody!);
+                    await args.Message.RespondAsync(msgBody!);
                     lastMeme = DateTime.Now;
                     break;
                 }
 
             }
 
+        }
+
+        internal static async Task ModerateNewMessages(DiscordClient client, MessageCreatedEventArgs args)
+        {
+            if(args.Guild == null) return;
+            if (args.Author.IsBot) return;
+            var member = await args.Guild.GetMemberAsync(args.Author.Id);
+            // If the user has Admin or Kick user perms, they are a moderator so don't act
+            if (member.Permissions.HasPermission(DiscordPermission.Administrator) || member.Permissions.HasPermission(DiscordPermission.KickMembers)) return;
+            var message = args.Message;
+            if (message.MentionEveryone || message.Content.Contains("@here") || message.Content.Contains("@everyone"))
+            {
+                bool warned = true;
+                try
+                {
+                    _ = await message.Author.SendMessageAsync(
+                        $"The following message was deleted in the channel {message.Channel.Mention} in {args.Guild.Name} due to it being flagged as spam:\n`{message.Content}`\n\n" +
+                        $"This action has been logged to the moderator team and further actions may result in a timeout, kick or even ban.\n" +
+                        $"If you believe you have received this in error, or your account was recently compromised, please let a member of the DLG Team know");
+                }
+                catch (Exception e)
+                {
+                    warned = false;
+                }
+
+                await message.DeleteAsync();
+                var notifyChannel = await client.GetChannelAsync(Options.ModNotificationsChannel);
+                var modMessage =
+                    $"The following message by {message.Author.Mention} was deleted in the channel {message.Channel.Name} due to it being flagged as spam:\n`{message.Content}`";
+                if (!warned)
+                {
+                    modMessage += "\nI could not notify them of this via DMs due to their privacy Settings";
+                }
+                client.SendMessageAsync(notifyChannel,
+                    modMessage);
+            }
         }
     }
 }

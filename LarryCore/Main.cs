@@ -2,6 +2,7 @@
 using CloudTheWolf.DSharpPlus.Scaffolding.Shared.Interfaces;
 using DSharpPlus;
 using DSharpPlus.Commands.Trees;
+using DSharpPlus.EventArgs;
 using LarryCore.Actions;
 using LarryCore.Events;
 using Microsoft.Extensions.Configuration;
@@ -24,11 +25,12 @@ namespace LarryCore
         {
             Options.LogPrefix = Name;
             Logger.Initialize();
-            //LoadConfig(applicationConfig);
+            LoadConfig(applicationConfig);
             RegisterCommands(bot);
-            bot.EventHandlerRegistry.Register(e => 
-                e.HandleMessageCreated(MessageCreated.OnMessageCreated)
-                );
+            bot.EventHandlerRegistry.Register(e => e
+                    .HandleMessageCreated(MessageCreated.ModerateNewMessages)
+                    .HandleMessageCreated(MessageCreated.OnMessageCreated));
+                
             
         }
 
@@ -40,7 +42,7 @@ namespace LarryCore
 
         private void LoadConfig(IConfigurationRoot applicationConfig)
         {
-            //Maybe needed Later
+            Options.ModNotificationsChannel = applicationConfig.GetValue<ulong>("modChannel");
         }
     }
 }

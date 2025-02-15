@@ -17,6 +17,6 @@ namespace LarryCore
         /// <summary>
         /// Ignored channels for "Secret" Responses
         /// </summary>
-        public static List<ulong>? IgnoredChannels { get; set; }
+        public static ulong ModNotificationsChannel { get; set; }
     }
 }
