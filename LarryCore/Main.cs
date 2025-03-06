@@ -5,9 +5,12 @@ using DSharpPlus.Commands.Trees;
 using DSharpPlus.EventArgs;
 using LarryCore.Actions;
 using LarryCore.Events;
+using LarryCore.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using ILogger = Serilog.ILogger;
 
 namespace LarryCore
@@ -29,7 +32,9 @@ namespace LarryCore
             RegisterCommands(bot);
             bot.EventHandlerRegistry.Register(e => e
                     .HandleMessageCreated(MessageCreated.ModerateNewMessages)
-                    .HandleMessageCreated(MessageCreated.OnMessageCreated));
+                    .HandleMessageCreated(MessageCreated.OnMessageCreated)
+                    .HandleMessageCreated(MessageCreated.CleanupChannels)
+                    );
                 
             
         }
@@ -37,12 +42,26 @@ namespace LarryCore
         private void RegisterCommands(IBot bot)
         {
             var helpCommands = CommandBuilder.From(typeof(LarryHelpCommands));
+            var gmCommands = CommandBuilder.From(typeof(LarryGameMasterGommands));
+            bot.CommandsList.Add(gmCommands);
             bot.CommandsList.Add(helpCommands);
         }
 
         private void LoadConfig(IConfigurationRoot applicationConfig)
         {
+            string tempPath = Path.GetTempPath();
+            string fileName = "channels.json";
+            string fullPath = Path.Combine(tempPath, fileName);
+            if (!File.Exists(fullPath))
+            {               
+                var defaultData = new List<Channel>();
+                string jsonData = JsonSerializer.Serialize(defaultData);
+                File.WriteAllText(fullPath, jsonData);   
+            }
+            string fileContent = File.ReadAllText(fullPath);
+            var channels = JsonSerializer.Deserialize<List<Channel>>(fileContent);
             Options.ModNotificationsChannel = applicationConfig.GetValue<ulong>("modChannel");
+            Options.Channels = channels;
         }
     }
 }
