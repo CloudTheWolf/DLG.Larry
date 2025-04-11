@@ -1,6 +1,6 @@
 ﻿using DSharpPlus.Commands;
 using DSharpPlus.Commands.Processors.SlashCommands;
-using LarryCore.Types;
+using LarryVoice.Types;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,10 +10,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LarryCore.Actions
+namespace LarryVoice.Actions
 {
     [Command("gm"), Description("Game Master Commands")]
-    class LarryGameMasterGommands
+    class LarryGameMasterCommands
     {
         [Command("make-vc"), Description("Make Voice Channel(s)")]
         public async Task MakeVoiceChannels(SlashCommandContext ctx,
@@ -23,9 +23,10 @@ namespace LarryCore.Actions
         {
             var gmRole = await ctx.Guild.GetRoleAsync(1343305945354342562);
             var adminRole = await ctx.Guild.GetRoleAsync(1217539141898866718);
+            var modRole = await ctx.Guild.GetRoleAsync(1356182450241278042);
             var parent = await ctx.Guild.GetChannelAsync(1217082125132632169);
 
-            var requiredRoles = new[] { gmRole, adminRole };
+            var requiredRoles = new[] { gmRole, adminRole, modRole };
             bool hasAnyRequired = requiredRoles.Any(r => ctx.Member.Roles.Contains(r));
             string tempPath = Path.GetTempPath();
             string fileName = "channels.json";
@@ -41,7 +42,8 @@ namespace LarryCore.Actions
                     {
                         Id = channel.Id,
                         Name = channel.Name,
-                        LastUsed = DateTime.UtcNow
+                        LastUsed = DateTime.UtcNow,
+                        Owner = ulong.MinValue
                     }; 
                     Options.Channels.Add(channelData);
                 }

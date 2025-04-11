@@ -21,7 +21,6 @@ namespace LarryCore.Events
     internal class MessageCreated
     {
         private static DateTime lastMeme = DateTime.Now.AddMinutes(-5);
-        private static DateTime lastClean = DateTime.Now.AddMinutes(-1);
         private static List<ulong> channelIgnoreList =
         [
             1217104547739340910,
@@ -124,51 +123,9 @@ namespace LarryCore.Events
                 {
                     modMessage += "\nI could not notify them of this via DMs due to their privacy Settings";
                 }
-                client.SendMessageAsync(notifyChannel,
+                _ = client.SendMessageAsync(notifyChannel,
                     modMessage);
             }
-        }
-
-        internal static async Task CleanupChannels(DiscordClient client, MessageCreatedEventArgs args)
-        {
-            var channelsToRemove = new List<Channel>();
-            if ((int)(DateTime.Now - lastClean).TotalMinutes < 1) return;
-            foreach (var channel in Options.Channels)
-            {
-                DiscordChannel channelData = null;
-                try
-                {
-                    channelData = await client.GetChannelAsync(channel.Id);
-                } catch(NotFoundException)
-                {
-                    channelsToRemove.Add(channel);
-                    continue;
-                }
-
-                if (channelData == null)
-                {
-                    channelsToRemove.Add(channel);
-                    continue;
-                }
-
-                if ((DateTime.Now - channel.LastUsed).TotalMinutes < 5) continue;
-                if(channelData.Users.Count > 0)
-                {
-                    channel.LastUsed = DateTime.UtcNow;
-                    continue;
-                }
-
-                await channelData.DeleteAsync();
-                channelsToRemove.Add(channel);
-            }
-            foreach(var channel in channelsToRemove)
-            {
-                Options.Channels.Remove(channel);
-            }
-            string tempPath = Path.GetTempPath();
-            string fileName = "channels.json";
-            string fullPath = Path.Combine(tempPath, fileName);
-            await File.WriteAllTextAsync(fullPath, JsonConvert.SerializeObject(Options.Channels));
         }
     }
 }
