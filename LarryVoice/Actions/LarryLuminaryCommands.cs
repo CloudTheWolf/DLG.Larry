@@ -28,7 +28,7 @@ namespace LarryVoice.Actions
             var elderLuminaryRole = await ctx.Guild.GetRoleAsync(1348122720344473661);
             var parent = await ctx.Guild.GetChannelAsync(1217082125132632169);
 
-            var requiredRoles = new[] { adminRole, modRole };
+            var requiredRoles = new[] { adminRole, modRole, babyLuminaryRole, luminaryRole, juniorLuminaryRole, elderLuminaryRole };
             bool hasAnyRequired = requiredRoles.Any(r => ctx.Member.Roles.Contains(r));
             string tempPath = Path.GetTempPath();
             string fileName = "channels.json";
