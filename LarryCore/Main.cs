@@ -30,6 +30,7 @@ namespace LarryCore
             bot.EventHandlerRegistry.Register(e => e
                     .HandleMessageCreated(MessageCreated.ModerateNewMessages)
                     .HandleMessageCreated(MessageCreated.OnMessageCreated)
+                    .HandleMessageReactionAdded(ReactionAdded.HandleMesssageReactionAdded)
                     );
                 
             
