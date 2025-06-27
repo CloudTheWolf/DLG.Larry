@@ -27,10 +27,11 @@ namespace LarryCore
             Logger.Initialize();
             LoadConfig(applicationConfig);
             RegisterCommands(bot);
-            bot.EventHandlerRegistry.Register(e => e
+            bot.EventHandlerRegistry.Register(e => e            
                     .HandleMessageCreated(MessageCreated.ModerateNewMessages)
                     .HandleMessageCreated(MessageCreated.OnMessageCreated)
                     .HandleMessageReactionAdded(ReactionAdded.HandleMesssageReactionAdded)
+                    .HandleGuildMemberUpdated(GuildMemberUpdated.HandleGuildMemberUpdated)
                     );
                 
             

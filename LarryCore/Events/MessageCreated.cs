@@ -29,15 +29,32 @@ namespace LarryCore.Events
             1282757370682019922,
             1297686036834553997,
             1323471735860891742,
-            1325286764713349254
+            1325286764713349254,
+
         ];
 
         internal static async Task OnMessageCreated(DiscordClient client,
             MessageCreatedEventArgs args)
         {
             if (args.Author.IsBot) return;
+            if (args.Channel.Id == 1217104547739340910) AddRulesReact(client,args);
             if (channelIgnoreList.Contains(args.Channel.Id)) return;
             FloridaManPost(args);
+        }
+
+        private static async Task AddRulesReact(DiscordClient client, MessageCreatedEventArgs args)
+        {
+            try
+            {
+                var message = args.Message;
+                var emoji = DiscordEmoji.FromName(client,":green_heart:",false);
+                await message.CreateReactionAsync(emoji);
+                
+            }
+            catch (NotFoundException)
+            {
+                // Message or channel not found, do nothing
+            }
         }
 
         private static async void FloridaManPost(MessageCreatedEventArgs args)
