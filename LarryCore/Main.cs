@@ -31,7 +31,9 @@ namespace LarryCore
                     .HandleMessageCreated(MessageCreated.ModerateNewMessages)
                     .HandleMessageCreated(MessageCreated.OnMessageCreated)
                     .HandleMessageReactionAdded(ReactionAdded.HandleMesssageReactionAdded)
-                    .HandleGuildMemberUpdated(GuildMemberUpdated.HandleGuildMemberUpdated)
+                    .HandleGuildMemberUpdated(GuildMemberEvents.HandleGuildMemberUpdated)
+                    .HandleGuildMemberRemoved(GuildMemberEvents.HandleGuildMemberRemoved)
+                    .HandleGuildBanAdded(GuildBanEvents.HandleGuildBanAdded)                    
                     );
                 
             

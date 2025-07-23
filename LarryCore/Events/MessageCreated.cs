@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using DSharpPlus.Entities;
 using LarryCore.Types;
 using DSharpPlus.Exceptions;
+using DSharpPlus.Entities.AuditLogs;
 
 namespace LarryCore.Events
 {
@@ -107,7 +108,8 @@ namespace LarryCore.Events
 
             }
 
-        }
+        }               
+        
 
         internal static async Task ModerateNewMessages(DiscordClient client, MessageCreatedEventArgs args)
         {
