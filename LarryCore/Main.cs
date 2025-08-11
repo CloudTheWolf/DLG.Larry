@@ -3,6 +3,7 @@ using CloudTheWolf.DSharpPlus.Scaffolding.Shared.Interfaces;
 using DSharpPlus;
 using DSharpPlus.Commands.Trees;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Interactivity;
 using LarryCore.Actions;
 using LarryCore.Events;
 using LarryCore.Types;
@@ -20,6 +21,7 @@ namespace LarryCore
 
         public int Version => 1;
 
+        
         public void InitPlugin(IBot bot, ILogger logger, DiscordConfiguration discordConfiguration,
             IConfigurationRoot applicationConfig)
         {
@@ -41,8 +43,11 @@ namespace LarryCore
 
         private void RegisterCommands(IBot bot)
         {
-            var helpCommands = CommandBuilder.From(typeof(LarryHelpCommands));            
+            var helpCommands = CommandBuilder.From(typeof(LarryHelpCommands));
+            var scholarshopCommands = CommandBuilder.From(typeof(LarryScholarshipCommands));
             bot.CommandsList.Add(helpCommands);
+            bot.CommandsList.Add(scholarshopCommands);            
+
         }
 
         private void LoadConfig(IConfigurationRoot applicationConfig)
@@ -59,6 +64,7 @@ namespace LarryCore
             string fileContent = File.ReadAllText(fullPath);
             var channels = JsonSerializer.Deserialize<List<Channel>>(fileContent);
             Options.ModNotificationsChannel = applicationConfig.GetValue<ulong>("modChannel");
+            Options.ClaimChannelId = applicationConfig.GetValue<ulong>("claimChannel");
             Options.Channels = channels;
         }
     }

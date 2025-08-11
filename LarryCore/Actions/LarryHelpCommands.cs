@@ -49,7 +49,7 @@ namespace LarryCore.Actions
             var articleButton = new DiscordLinkButtonComponent(
                 "https://datelikegoblins.substack.com/p/why-your-dating-profile-sucks", "Profile Advice", false,
                 new DiscordComponentEmoji("🤔"));
-            var discordMessage = new DiscordMessageBuilder().AddComponents([gameButton,websiteButton,bugButton,feedbackButton,articleButton]).AddEmbed(embed
+            var discordMessage = new DiscordMessageBuilder().AddActionRowComponent([gameButton,websiteButton,bugButton,feedbackButton,articleButton]).AddEmbed(embed
                 .WithAuthor("Larry", iconUrl: "https://r2.fivemanage.com/IhCibjCMuV7gSbF16zgPO/images/larry_128.png")
                 .WithImageUrl("https://r2.fivemanage.com/IhCibjCMuV7gSbF16zgPO/images/dlg_banner.png")
                 .Build());
@@ -88,7 +88,7 @@ namespace LarryCore.Actions
                 .WithImageUrl(
                     "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F444ce51c-7fb1-4884-9f5f-5a5ef17359e9_1369x578.png")
                 .Build());
-            message.AddComponents([websiteButton]);
+            message.AddActionRowComponent([websiteButton]);
             ctx.EditResponseAsync(message);
         }
     }

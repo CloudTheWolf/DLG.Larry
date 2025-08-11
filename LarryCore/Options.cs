@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using DSharpPlus.Interactivity;
 using LarryCore.Types;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,16 @@ namespace LarryCore
         /// Ignored channels for "Secret" Responses
         /// </summary>
         public static ulong ModNotificationsChannel { get; set; }
-
+        
+        /// <summary>
+        /// List of channels created by larry
+        /// </summary>
         public static List<Channel> Channels { get; set; } = new();
+
+        /// <summary>
+        /// Channel ID for the claim channel
+        /// </summary>
+        public static ulong ClaimChannelId { get; set; }
+
     }
 }
