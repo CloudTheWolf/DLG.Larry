@@ -132,7 +132,10 @@ namespace LarryCore.Actions
             embedMessage.AddField("Reason For Requesting", values["s2"]);
             embedMessage.AddField("Community Impact", values["s3"]);
             embedMessage.AddField("Longer Than 3 Months?", values["s4"], true);
-            embedMessage.AddField("Willing to Contribute", values["s5"], true);
+            if (values.ContainsKey("s5") && !string.IsNullOrEmpty(values["s5"]))
+            {
+                embedMessage.AddField("Willing to Contribute", values["s5"], true);
+            }
             await ctx.Member.GrantRoleAsync(await ctx.Guild.GetRoleAsync(1402724236933599383));
             await logChannel.SendMessageAsync(embedMessage);
         }
@@ -179,7 +182,10 @@ namespace LarryCore.Actions
             embedMessage.AddField("What would make it a no-brainer?", values["f2"]);
             embedMessage.AddField("How was your experience so far?", values["f3"]);
             embedMessage.AddField("Other ways you’d support us?", values["f4"]);
-            embedMessage.AddField("Anything else we should know?", values["f5"]);
+            if (values.ContainsKey("f5") && !string.IsNullOrEmpty(values["f5"]))
+            {
+                embedMessage.AddField("Anything else we should know?", values["f5"]);
+            }
             await ctx.Member.GrantRoleAsync(await ctx.Guild.GetRoleAsync(1402724236933599383));
             await logChannel.SendMessageAsync(embedMessage);
         }
