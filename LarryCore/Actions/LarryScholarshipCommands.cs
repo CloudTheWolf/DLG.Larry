@@ -97,7 +97,7 @@ namespace LarryCore.Actions
                 .WithTitle("Scholarship Claim Form")
                 .WithCustomId("scholarship_modal_1")
                 .AddTextInputComponent(new DiscordTextInputComponent(label: "Username or Email", customId: "s1", placeholder: "Username or Email of your Goblins account", required: true, style: DiscordTextInputStyle.Short, min_length: 5, max_length: 50))
-                .AddTextInputComponent(new DiscordTextInputComponent(label: "Why are you requesting a scholarship?", customId: "s2", placeholder: "", required: false, style: DiscordTextInputStyle.Paragraph, max_length: 2000))
+                .AddTextInputComponent(new DiscordTextInputComponent(label: "Why are you requesting a scholarship?", customId: "s2", placeholder: "", required: true, style: DiscordTextInputStyle.Paragraph, max_length: 2000))
                 .AddTextInputComponent(new DiscordTextInputComponent(label: "How has/will the community help you?", customId: "s3", placeholder: "", required: true, style: DiscordTextInputStyle.Paragraph, min_length: 5, max_length:2000))
                 .AddTextInputComponent(new DiscordTextInputComponent(label: "Do you need longer than 3 months?", customId: "s4", placeholder: "Yes or No", required: true, style: DiscordTextInputStyle.Short, min_length:2, max_length: 3))
                 .AddTextInputComponent(new DiscordTextInputComponent(label: "Are you open to contributing?", customId: "s5", placeholder: "Yes or No", required: true, style: DiscordTextInputStyle.Short, min_length: 2, max_length: 3));
